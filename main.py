@@ -51,8 +51,7 @@ def get_user_choice():
 	while choice < 1 or choice > 2:
 		choice = int(input("What would you like to do:\n" +
 								"1. Record a new invoice\n" +
-								"2. TODO: replace this option\n"
-					))
+								"2. TODO: replace this option\n"))
 
 	return choice
 
