@@ -1,7 +1,7 @@
 import pymysql.cursors
 
 def main():
-	conn = create_connection('Database')    # establish DB connection
+	conn = create_connection('GroupProjectPart2 (1)')    # establish DB connection
 	if conn is None:
 		exit()
 		
@@ -27,7 +27,7 @@ def create_connection(database_name):
 	try:
 		conn = pymysql.connect(
 			user='root',
-			password='password123', # TODO: add your password here 
+			password='Atlanticocean1', # TODO: add your password here 
 			host='127.0.0.1',
 			database=database_name) 
 			# autocommit = false by default
