@@ -1,13 +1,12 @@
 import pymysql.cursors
 
 def main():
-	# establish DB connection
-	conn = create_connection('Database')
+	conn = create_connection('Database')    # establish DB connection
 	if conn is None:
 		exit()
 		
-	# ask the user what operation they want to perform
-	choice = get_user_choice()
+
+	choice = get_user_choice()  # ask the user what operation they want to perform
 	
 	# call the method corresponding to that operation
 	if choice == 1:
@@ -15,8 +14,7 @@ def main():
 	elif choice == 2:
 		pass # TODO: replace this line with a new method call
 
-	# close DB connection
-	conn.close()
+	conn.close() 	# close DB connection
 
 
 def create_connection(database_name):
@@ -52,7 +50,6 @@ def get_user_choice():
 		choice = int(input("What would you like to do:\n" +
 								"1. Record a new invoice\n" +
 								"2. TODO: replace this option\n"))
-
 	return choice
 
 def read_string(prompt):
