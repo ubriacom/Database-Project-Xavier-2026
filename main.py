@@ -1,7 +1,7 @@
 import pymysql.cursors
 
 def main():
-	conn = create_connection('GroupProjectPart2 (1)')    # establish DB connection
+	conn = create_connection(GroupProjectPart2-(1)-1)    # establish DB connection
 	if conn is None:
 		exit()
 		
