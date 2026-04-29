@@ -10,9 +10,13 @@ def main():
 	
 	# call the method corresponding to that operation
 	if choice == 1:
-		record_invoice(conn) # TODO: replace this line with a new method call
+		information_processing(conn)
 	elif choice == 2:
-		pass # TODO: replace this line with a new method call
+		merch_inv_records(conn)
+	elif choice == 3:
+		pass # TODO: replace with method call
+	elif choice == 4:
+		pass # TODO: replace with method call
 
 	conn.close() 	# close DB connection
 
@@ -46,12 +50,12 @@ def get_user_choice():
 	"""
 
 	choice = -1
-	while choice < 1 or choice > 2:
-		choice = int(input("What task would you like to perform:\n" +
-								"1. Record a new invoice\n" +
-								"2. TODO: replace this option\n"
-								"3. Third option\n"
-                                "4. Fourth option\n"))
+	while choice < 1 or choice > 4:
+		choice = int(input("\nWhat task would you like to perform:\n" +
+								"1. Information Processing\n" +
+								"2. Maintaining Merchandise and Inventory Records\n" +
+								"3. Maintaining Billing and Transaction Records\n" +
+                                "4. Reports\n" + "\n"))
 	return choice
 
 def read_string(prompt):
@@ -80,6 +84,53 @@ def read_float(prompt):
 		the float entered
 	"""
 	return float(input(prompt))
+
+def information_processing(conn):
+	choice =-1
+	while choice < 1 or choice > 3:
+		choice = int(input("\nWhat information processing would you like to perform?\n" +
+											"1. Enter, Update, or Delete information about stores\n" +
+											"2. Enter, Update, or Delete information about customers / members\n" +
+											"3. Enter, Update, or Delete information about staff\n" + "\n"))
+	if choice == 1:
+		store_info(conn)
+	elif choice == 2:
+		customer_info(conn)
+	elif choice == 3:
+		staff_info(conn)
+
+
+def store_info(conn):
+	choice = -1
+	while choice < 1 or choice > 3:
+		choice = int(input("\nWould you like to enter, update or delete information?\n" +
+					 "1. Enter\n" +
+					 "2. Update\n" +
+					 "3. Delete\n" + "\n"))
+	if choice == 1:
+		pass
+	elif choice == 2:
+		pass
+	elif choice == 3:
+		pass
+
+
+
+def merch_inv_records(conn):
+	choice = -1
+	while choice < 1 or choice > 4:
+		choice = int(input("\nWhat merchandise and inventory records would you like to change?\n" +
+						"1. Enter, Update, or Delete information about products\n" +
+						"2. Enter, Update, or Delete information about discounts\n" +
+						"3. Increase, Remove, or search inventory for a specific product\n" + "\n"))
+	return choice
+
+
+
+
+
+
+
 
 def record_invoice(conn):
 	""" 
