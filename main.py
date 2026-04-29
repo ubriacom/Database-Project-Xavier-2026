@@ -49,7 +49,9 @@ def get_user_choice():
 	while choice < 1 or choice > 2:
 		choice = int(input("What task would you like to perform:\n" +
 								"1. Record a new invoice\n" +
-								"2. TODO: replace this option\n"))
+								"2. TODO: replace this option\n"
+								"3. Third option\n"
+                                "4. Fourth option\n"))
 	return choice
 
 def read_string(prompt):
