@@ -1,7 +1,7 @@
 import pymysql.cursors
 
 def main():
-	conn = create_connection(GroupProjectPart2-(1)-1)    # establish DB connection
+	conn = create_connection('MuskieCo')    # establish DB connection
 	if conn is None:
 		exit()
 		
@@ -47,7 +47,7 @@ def get_user_choice():
 
 	choice = -1
 	while choice < 1 or choice > 2:
-		choice = int(input("What would you like to do:\n" +
+		choice = int(input("What task would you like to perform:\n" +
 								"1. Record a new invoice\n" +
 								"2. TODO: replace this option\n"))
 	return choice
