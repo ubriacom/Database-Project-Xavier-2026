@@ -188,7 +188,7 @@ def reports(conn):
 		choice = int(input("\nWhat reports are needed?\n" +
 					 "1. Total sales by day, month, or year\n" +
 					 "2. Merchandise stock reporting\n" +
-					 "Customer total purchase amount for a given time period\n" + "\n"))
+					 "3. Customer total purchase amount for a given time period\n" + "\n"))
 		if choice == 1:
 			reports_date_choice(conn)
 		elif choice == 2:
