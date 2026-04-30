@@ -1,4 +1,8 @@
 import pymysql.cursors
+import information_processing
+import merch_inv_records
+import bill_trans_records
+import reports
 
 def main():
 	conn = create_connection('MuskieCo')    # establish DB connection
@@ -84,144 +88,23 @@ def read_float(prompt):
 	"""
 	return float(input(prompt))
 
-def information_processing(conn):
-	choice =-1
-	while choice < 1 or choice > 3:
-		choice = int(input("\nWhat information processing would you like to perform?\n" +
-											"1. Enter, Update, Delete, or Search information about stores\n" +
-											"2. Enter, Update, Delete, or Search information about customers / members\n" +
-											"3. Enter, Update, Delete, or Search information about staff\n" + "\n"))
-	if choice == 1:
-		store_info(conn)
-	elif choice == 2:
-		customer_info(conn)
-	elif choice == 3:
-		staff_info(conn)
-
-
-def store_info(conn):
-	choice = -1
-	while choice < 1 or choice > 4:
-		choice = int(input("\nWould you like to enter, update or delete information?\n" +
-					 "1. Enter\n" +
-					 "2. Update\n" +
-					 "3. Delete\n" +
-					 "4. Search\n" + "\n"))
-	if choice == 1:
-		pass
-	elif choice == 2:
-		pass
-	elif choice == 3:
-		pass
-	elif choice == 4:
-		pass
-
-
-def customer_info(conn):
-	choice = -1
-	while choice < 1 or choice > 4:
-		choice = int(input("\nWould you like to enter, update or delete information?\n" +
-					 "1. Enter\n" +
-					 "2. Update\n" +
-					 "3. Delete\n" +
-					 "4. Search\n" + "\n"))
-	if choice == 1:
-		pass
-	elif choice == 2:
-		pass
-	elif choice == 3:
-		pass
-	elif choice == 4:
-		pass
-		
-
-def staff_info(conn):
-	choice = -1
-	while choice < 1 or choice > 4:
-		choice = int(input("\nWould you like to enter, update or delete information?\n" +
-					 "1. Enter\n" +
-					 "2. Update\n" +
-					 "3. Delete\n" +
-					 "4. Search\n" + "\n"))
-	if choice == 1:
-		pass
-	elif choice == 2:
-		pass
-	elif choice == 3:
-		pass
-	elif choice == 4:
-		pass
-
-
-
-def merch_inv_records(conn):
-	choice = -1
-	while choice < 1 or choice > 4:
-		choice = int(input("\nWhat merchandise and inventory records would you like to change?\n" +
-						"1. Enter, Update, or Delete information about products\n" +
-						"2. Enter, Update, or Delete information about discounts\n" +
-						"3. Increase, Remove, or search inventory for a specific product\n" + "\n"))
-	return choice
-
-
-
-def bill_trans_records(conn):
-	choice = -1
-	while choice < 1 or choice > 4:
-		choice = int(input("\nWhat records do you need from transactions and billing?\n" +
-					 "1. Generate reward notices for members that are due at the end of each month\n" +
-					 "2. Generate rewards checks for employees at the end of each quarter\n" +
-					 "3. Transaction information including total price\n" + "\n"))
-		if choice == 1:
-			pass
-		elif choice ==2:
-			pass
-		elif choice == 3:
-			pass
 
 
 
 
-def reports(conn):
-	choice = -1
-	while choice < 1 or choice > 3:
-		choice = int(input("\nWhat reports are needed?\n" +
-					 "1. Total sales by day, month, or year\n" +
-					 "2. Merchandise stock reporting\n" +
-					 "3. Customer total purchase amount for a given time period\n" + "\n"))
-		if choice == 1:
-			reports_date_choice(conn)
-		elif choice == 2:
-			stock_reporting(conn)
-		elif choice == 3:
-			pass
 
 
-def reports_date_choice(conn):
-	choice = -1
-	while choice < 1 or choice > 3:
-		choice = int(input("\nDo you need the sales by day, month, or year?\n" +
-				   "1. Day\n" +
-				   "2. Month\n" +
-				   "3. Year\n" + "\n"))
-		if choice == 1:
-			pass
-		elif choice == 2:
-			pass
-		elif choice == 3:
-			pass
 
 
-def stock_reporting(conn):
-	choice = -1
-	while choice < 1 or choice > 2:
-		choice = int(input("\nDo you want to check a product across one store or all stores\n" +
-					 "1. One store\n" +
-					 "2. All stores\n" + "\n"))
-		if choice == 1:
-			pass
-		elif choice == 2:
-			pass
+
+
+
+
+
+
+
+
+
 
 
 
