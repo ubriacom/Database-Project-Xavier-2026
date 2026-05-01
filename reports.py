@@ -62,15 +62,60 @@ def reports_date_choice(conn):
 	choice = -1
 	while choice < 1 or choice > 3:
 		choice = int(input("\nDo you need the sales by day, month, or year?\n" +
-				   "1. Day\n" +
-				   "2. Month\n" +
-				   "3. Year\n" + "\n"))
+						   "1. Day\n" +
+						   "2. Month\n" +
+						   "3. Year\n\n"))
+
 		if choice == 1:
-			pass
+			storeID = read_int("Store ID: ")
+			date = read_string("Day (YYYY-MM-DD): ")
+			sql = """
+				SELECT COUNT(*) AS Sales
+				FROM Transaction
+				WHERE StoreID = %s
+				AND DATE(PurchaseDate) = %s;
+			"""
+			
+			cur = conn.cursor()
+			cur.execute(sql, (storeID, date))
+			result = cur.fetchone()
+			cur.close()
+			print(f"\nSales for Store {storeID} on {date}: {result[0]}")
+
 		elif choice == 2:
-			pass
+			storeID = read_int("Store ID: ")
+			month = read_int("Month (1-12): ")
+			year = read_int("Year (YYYY): ")
+			sql = """
+				SELECT COUNT(*) AS Sales
+				FROM Transaction
+				WHERE StoreID = %s
+				AND MONTH(PurchaseDate) = %s
+				AND YEAR(PurchaseDate) = %s;
+			"""
+			cur = conn.cursor()
+			cur.execute(sql, (storeID, month, year))
+			result = cur.fetchone()
+			cur.close()
+			print(f"\nSales for Store {storeID} in {month}/{year}: {result[0]}")
+
 		elif choice == 3:
-			pass
+			storeID = read_int("Store ID: ")
+			year = read_int("Year (YYYY): ")
+			sql = """
+				SELECT COUNT(*) AS Sales
+				FROM Transaction
+				WHERE StoreID = %s
+				AND YEAR(PurchaseDate) = %s;
+			"""
+			cur = conn.cursor()
+			cur.execute(sql, (storeID, year))
+			result = cur.fetchone()
+			cur.close()
+			print(f"\nSales for Store {storeID} in {year}: {result[0]}")
+
+		else:
+			print("Invalid choice, please enter 1, 2, or 3.")
 
 
 def stock_reporting(conn):
