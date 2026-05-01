@@ -132,7 +132,6 @@ def staff_info(conn):
 
 
 def record_new_store(conn):
-	
     managerID = read_int("Manager ID: ")
     address = read_string("Address: ")
     phone_number = read_string("Phone Number in (123)-456-7890 format: ")
