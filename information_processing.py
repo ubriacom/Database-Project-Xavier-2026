@@ -57,21 +57,12 @@ def store_info(conn):
 					 "4. Search\n" + "\n"))
 	if choice == 1:
 		record_new_store(conn)
-
-
-		
-
-
-
-
-
-
 	elif choice == 2:
-		pass
+		update_store(conn)
 	elif choice == 3:
-		pass
+		delete_store(conn)
 	elif choice == 4:
-		pass
+		search_store(conn)
 
 
 def customer_info(conn):
@@ -83,13 +74,13 @@ def customer_info(conn):
 					 "3. Delete\n" +
 					 "4. Search\n" + "\n"))
 	if choice == 1:
-		pass
+		enter_customer(conn)
 	elif choice == 2:
-		pass
+		update_customer(conn)
 	elif choice == 3:
-		pass
+		delete_customer(conn)
 	elif choice == 4:
-		pass
+		search_customer(conn)
 		
 
 def staff_info(conn):
@@ -101,13 +92,13 @@ def staff_info(conn):
 					 "3. Delete\n" +
 					 "4. Search\n" + "\n"))
 	if choice == 1:
-		pass
+		enter_staff(conn)
 	elif choice == 2:
-		pass
+		update_staff(conn)
 	elif choice == 3:
-		pass
+		delete_staff(conn)
 	elif choice == 4:
-		pass
+		search_staff(conn)
 	
 
 
@@ -146,3 +137,57 @@ def record_new_store(conn):
 		
     else:
         conn.commit()
+		
+
+
+
+def update_store(conn):
+	pass
+
+
+def delete_store(conn):
+	storeID = read_int("Store ID: ")
+	
+sql_delete_store = """ 
+	DELETE FROM Store WHERE StoreID = (%s);
+	"""
+conn.begin()
+cur = conn.cursor()
+conn.commit()
+
+def search_store(conn):
+	pass
+
+
+def enter_customer(conn):
+	pass
+
+
+def update_customer(conn):
+	pass
+
+
+def delete_customer(conn):
+	pass
+
+
+def search_customer(conn):
+	pass
+
+
+
+
+def enter_staff(conn):
+	pass
+
+
+def update_staff(conn):
+	pass
+
+
+def delete_staff(conn):
+	pass
+
+
+def search_staff(conn):
+	pass
