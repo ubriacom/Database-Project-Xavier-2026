@@ -19,13 +19,13 @@ def product_info(conn):
 					 "3. Delete\n" +
 					 "4. Search\n" + "\n"))
 	if choice == 1:
-		pass
+		enter_product(conn)
 	elif choice == 2:
-		pass
+		update_product(conn)
 	elif choice == 3:
-		pass
+		delete_product(conn)
 	elif choice == 4:
-		pass
+		search_product(conn)
 	
 
 def discount_info(conn):
@@ -37,10 +37,38 @@ def discount_info(conn):
 					 "3. Delete\n" +
 					 "4. Search\n" + "\n"))
 	if choice == 1:
-		pass
+		enter_discount(conn)
 	elif choice == 2:
-		pass
+		update_discount(conn)
 	elif choice == 3:
-		pass
+		delete_discount(conn)
 	elif choice == 4:
-		pass
+		search_discount(conn)
+	
+
+def enter_product(conn):
+	pass
+
+
+def update_product(conn):
+	pass
+
+def delete_product(conn):
+	pass
+
+def search_product(conn):
+	pass
+
+
+
+def enter_discount(conn):
+	pass
+
+def update_discount(conn):
+	pass
+
+def delete_discount(conn):
+	pass
+
+def search_discount(conn):
+	pass

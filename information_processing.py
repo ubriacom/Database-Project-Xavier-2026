@@ -31,16 +31,19 @@ def read_float(prompt):
 
 def information_processing(conn):
 	choice =-1
-	while choice < 1 or choice > 3:
+	while choice < 1 or choice > 4:
 		choice = int(input("\nWhat information processing would you like to perform?\n" +
 											"1. Enter, Update, Delete, or Search information about stores\n" +
-											"2. Enter, Update, Delete, or Search information about customers / members\n" +
-											"3. Enter, Update, Delete, or Search information about staff\n" + "\n"))
+											"2. Enter, Update, Delete, or Search information about customers\n" +
+											"3. Enter, Update, Delete, or Search information about members\n" +
+											"4. Enter, Update, Delete, or Search information about staff\n" + "\n"))
 	if choice == 1:
 		store_info(conn)
 	elif choice == 2:
 		customer_info(conn)
 	elif choice == 3:
+		member_info(conn)
+	elif choice == 4:
 		staff_info(conn)
 		
 
@@ -65,7 +68,7 @@ def store_info(conn):
 def customer_info(conn):
 	choice = -1
 	while choice < 1 or choice > 4:
-		choice = int(input("\nWould you like to enter, update or delete information?\n" +
+		choice = int(input("\nWould you like to enter, update delete, or search information?\n" +
 					 "1. Enter\n" +
 					 "2. Update\n" +
 					 "3. Delete\n" +
@@ -78,6 +81,26 @@ def customer_info(conn):
 		delete_customer(conn)
 	elif choice == 4:
 		search_customer(conn)
+		
+
+def member_info(conn):
+	choice = -1
+	while choice < 1 or choice > 4:
+		choice = int(input("\nWould you like to enter, update delete, or search information?\n" +
+					 "1. Enter\n" +
+					 "2. Update\n" +
+					 "3. Delete\n" +
+					 "4. Search\n" + "\n"))
+		if choice == 1:
+			enter_member(conn)
+		elif choice == 2:
+			update_member(conn)
+		elif choice == 3:
+			delete_member(conn)
+		elif choice == 4:
+			search_member(conn)
+
+
 		
 
 def staff_info(conn):
@@ -186,6 +209,22 @@ def delete_customer(conn):
 
 
 def search_customer(conn):
+	pass
+
+
+def enter_member(conn):
+	pass
+
+
+def update_member(conn):
+	pass
+
+
+def delete_member(conn):
+	pass
+
+
+def search_member(conn):
 	pass
 
 
