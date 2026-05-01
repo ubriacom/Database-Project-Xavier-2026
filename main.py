@@ -54,7 +54,7 @@ def get_user_choice():
 
 	choice = -1
 	while choice < 1 or choice > 4:
-		choice = int(input("\nWhat task would you like to perform:\n" +
+		choice = int(input("\nWhat task would you like to perform?\n" +
 								"1. Information Processing\n" +
 								"2. Maintaining Merchandise and Inventory Records\n" +
 								"3. Maintaining Billing and Transaction Records\n" +
