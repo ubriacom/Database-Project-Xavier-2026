@@ -40,3 +40,7 @@ def stock_reporting(conn):
 			pass
 		elif choice == 2:
 			pass
+		
+
+def customer_records(conn):
+	pass

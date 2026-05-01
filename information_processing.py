@@ -1,5 +1,37 @@
 import pymysql.cursors
 
+
+def read_string(prompt):
+	""" 
+	Reads a string from the user 
+	Returns:
+		the string entered
+	"""
+	return input(prompt)
+
+
+def read_int(prompt):
+	""" 
+	Reads an int from the user 
+	Returns:
+		the int entered
+	"""
+
+	return int(input(prompt))
+
+
+def read_float(prompt):
+	""" 
+	Reads a float from the user 
+	Returns:
+		the float entered
+	"""
+	return float(input(prompt))
+
+
+
+
+
 def information_processing(conn):
 	choice =-1
 	while choice < 1 or choice > 3:
@@ -24,7 +56,16 @@ def store_info(conn):
 					 "3. Delete\n" +
 					 "4. Search\n" + "\n"))
 	if choice == 1:
-		pass
+		record_new_store(conn)
+
+
+		
+
+
+
+
+
+
 	elif choice == 2:
 		pass
 	elif choice == 3:
@@ -67,3 +108,41 @@ def staff_info(conn):
 		pass
 	elif choice == 4:
 		pass
+	
+
+
+
+
+
+
+
+
+
+
+
+def record_new_store(conn):
+	
+    managerID = read_int("Manager ID: ")
+    address = read_string("Address: ")
+    phone_number = read_int("Phone Number in (123)-456-7890 format: ")
+		
+    sql_insert_store = """ 
+		INSERT INTO Invoice VALUES 
+		(%s, %s, %s);
+	"""
+	
+    try:
+        conn.begin() # same as START TRANSACTION;
+        cur = conn.cursor()
+
+        lines_affected = cur.execute(sql_insert_store, 
+			(managerID, address, phone_number))
+		
+        if lines_affected != 1:
+            raise Exception("insert into invoice did not affect one line")
+	
+    except Exception as error:
+        print("Invlaid Value: " + error)
+		
+    else:
+        conn.commit()

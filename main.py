@@ -14,13 +14,13 @@ def main():
 	
 	# call the method corresponding to that operation
 	if choice == 1:
-		information_processing(conn)
+		information_processing.information_processing(conn)
 	elif choice == 2:
-		merch_inv_records(conn)
+		merch_inv_records.merch_inv_records(conn)
 	elif choice == 3:
-		bill_trans_records(conn)
+		bill_trans_records.bill_trans_records(conn)
 	elif choice == 4:
-		reports(conn)
+		reports.reports(conn)
 	conn.close() 	# close DB connection
 
 
@@ -87,26 +87,6 @@ def read_float(prompt):
 		the float entered
 	"""
 	return float(input(prompt))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
