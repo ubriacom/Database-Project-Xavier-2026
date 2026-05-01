@@ -29,10 +29,10 @@ def employee_reward_check(conn):
 
 def transaction_information(conn):
     # get the transaction id
-  	transaction_id = read_int("Transaction ID: ")
+    transaction_id = read_int("Transaction ID: ")
   	
   	# create our large SQL statement (boo! im a big block of code!)
-  	sql_statement = f"""
+    sql_statement = """
 		SELECT DISTINCT p.Name, MAX(p.SellPrice) AS Individual_Price, MAX(pp.Quantity) AS Total_Quantity, MAX(p.SellPrice * pp.Quantity) AS Raw_Amount_Spent,
     SUM(d.Amount) AS Discount, MAX(p.SellPrice * pp.Quantity) * (100-SUM(d.Amount))/100 AS Amount_Spent
     FROM Transaction t -- Using joins to chain transaction purchased prodcuct and product together.
@@ -46,31 +46,31 @@ def transaction_information(conn):
     GROUP BY p.ProductID;
   	"""
   	
-  	try:
+    try:
   	  # start our transaction
-  		conn.begin() 
-  		cur = conn.cursor(dictionary=True) # makes it nicer to read
+        conn.begin() 
+        cur = conn.cursor(dictionary=True) # makes it nicer to read
   
-      cur.execute(sql_statement, (transaction_id))
-      results = cur.fetchall() # get our results
-      print(f"Information for Transaction ID: {transaction_id}")
+        cur.execute(sql_statement, (transaction_id))
+        results = cur.fetchall() # get our results
+        print(f"Information for Transaction ID: {transaction_id}")
       
-      if (len(results) == 0):
+        if (len(results) == 0):
         # no data! let the user known
-        raise Exception(f"No data found for Transaction ID: {transaction_id}")
+            raise Exception(f"No data found for Transaction ID: {transaction_id}")
       
       # display results and calculate total manually
-      total_spent = 0
-      for row in results:
-        print(row)
-        total_spent += row["Amount_Spent"] or row["Raw_Amount_Spent"] or 0
+        total_spent = 0
+        for row in results:
+            print(row)
+            total_spent += row["Amount_Spent"] or row["Raw_Amount_Spent"] or 0
         
-      print(f"Total money spent in transaction: {total_spent}")
+        print(f"Total money spent in transaction: {total_spent}")
       
-  	except Exception as err:
-  		print("Error: ", err)
-  		conn.rollback() # same as ROLLBACK in SQL
+    except Exception as err:
+        print("Error: ", err)
+        conn.rollback() # same as ROLLBACK in SQL
   
-  	else: # this only triggers if the entire try block was successful
-  		conn.commit() # same as COMMIT in SQL
+    else: # this only triggers if the entire try block was successful
+        conn.commit() # same as COMMIT in SQL
   
