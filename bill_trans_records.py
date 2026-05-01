@@ -1,5 +1,32 @@
 import pymysql.cursors
 
+def read_string(prompt):
+	""" 
+	Reads a string from the user 
+	Returns:
+		the string entered
+	"""
+	return input(prompt)
+
+
+def read_int(prompt):
+	""" 
+	Reads an int from the user 
+	Returns:
+		the int entered
+	"""
+
+	return int(input(prompt))
+
+
+def read_float(prompt):
+	""" 
+	Reads a float from the user 
+	Returns:
+		the float entered
+	"""
+	return float(input(prompt))
+
 def bill_trans_records(conn):
 	choice = -1
 	while choice < 1 or choice > 3:
