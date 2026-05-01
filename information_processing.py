@@ -29,9 +29,6 @@ def read_float(prompt):
 	return float(input(prompt))
 
 
-
-
-
 def information_processing(conn):
 	choice =-1
 	while choice < 1 or choice > 3:
@@ -115,10 +112,10 @@ def record_new_store(conn):
 	
     managerID = read_int("Manager ID: ")
     address = read_string("Address: ")
-    phone_number = read_int("Phone Number in (123)-456-7890 format: ")
+    phone_number = read_string("Phone Number in (123)-456-7890 format: ")
 		
     sql_insert_store = """ 
-		INSERT INTO Invoice VALUES 
+		INSERT INTO Store VALUES 
 		(%s, %s, %s);
 	"""
 	
@@ -130,10 +127,10 @@ def record_new_store(conn):
 			(managerID, address, phone_number))
 		
         if lines_affected != 1:
-            raise Exception("insert into invoice did not affect one line")
+            raise Exception("insert into store did not affect one line")
 	
     except Exception as error:
-        print("Invlaid Value: " + error)
+        print("Invlaid Value: " + str(error))
 		
     else:
         conn.commit()
@@ -142,21 +139,38 @@ def record_new_store(conn):
 
 
 def update_store(conn):
-	pass
+    managerID = read_int("Manager ID: ")
+    address = read_string("Address: ")
+    phone_number = read_string("Phone Number in (123)-456-7890 format: ")
+    storeID = read_int("Store ID: ")
+	
+    sql_update_store = """
+        UPDATE STORE SET ManagerID = (%s), Address = (%s), PhoneNumber = (%s)
+		WHERE StoreID = (%s);
 
+    """
 
 def delete_store(conn):
-	storeID = read_int("Store ID: ")
-	
-sql_delete_store = """ 
-	DELETE FROM Store WHERE StoreID = (%s);
-	"""
-conn.begin()
-cur = conn.cursor()
-conn.commit()
+    storeID = read_int("Store ID: ")
+
+    sql_delete_store = """ 
+        DELETE FROM Store WHERE StoreID = (%s);
+    """
+    conn.begin()
+    cur = conn.cursor()
+    cur.execute(sql_delete_store, (storeID,))
+    conn.commit()
 
 def search_store(conn):
-	pass
+    storeID = read_int("Store ID: ")
+	
+    sql_search_store = """
+        SELECT * FROM Store WHERE StoreID = (%s);
+    """
+    conn.begin()
+    cur = conn.cursor()
+    cur.execute(sql_search_store, (storeID,))
+    conn.commit()
 
 
 def enter_customer(conn):
