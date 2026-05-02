@@ -43,28 +43,7 @@ def reports(conn):
 		elif choice == 2:
 			stock_reporting(conn)
 		elif choice == 3:
-			start_date = read_string("\nStart Date (YYYY-MM-DD): ")
-			end_date = read_string("\nEnd Date (YYYY-MM-DD): ")
-			customerID = read_int("Customer ID: ")
-
-			sql_customer_purchase_records = """
-				SELECT SUM(P.SellPrice) AS Amount_Spent, t.CustomerID
-				FROM Transaction t
-				INNER JOIN PurchasedProduct pp ON t.TransactionID = pp.TransactionID
-				INNER JOIN Product p ON pp.ProductID = p.ProductID
-				WHERE (t.PurchaseDate BETWEEN (%s) AND (%s)) AND t.CustomerID = (%s);
-			"""
-			cur = conn.cursor()
-			cur.execute(sql_customer_purchase_records, (start_date, end_date, customerID))
-			result = cur.fetchone()
-			cur.close()
-			print(f"\nPurchase amount for Customer {customerID} between {start_date} and {end_date}: {result[0]}")
-
-		return_choice = int(input("\nWould you like to do another operation?\n" +
-						"1. Yes\n" +
-						"2. No\n" + "\n"))
-		if return_choice == 1: 
-			main.main()
+			customer_purchase_amount(conn)
 
 
 
@@ -125,14 +104,16 @@ def reports_date_choice(conn):
 			cur.close()
 			print(f"\nSales for Store {storeID} in {year}: {result[0]}")
 		
-		return_choice = int(input("\nWould you like to do another operation?\n" +
-						"1. Yes\n" +
-						"2. No\n" + "\n"))
-		if return_choice == 1: 
-			main.main()
-
 		else:
 			print("Invalid choice, please enter 1, 2, or 3.")
+		
+	return_choice = int(input("\nWould you like to do another operation?\n" +
+					"1. Yes\n" +
+					"2. No\n" + "\n"))
+	if return_choice == 1: 
+		main.main()
+	else:
+		exit()
 
 
 def stock_reporting(conn):
@@ -170,12 +151,42 @@ def stock_reporting(conn):
 			result = cur.fetchone()
 			cur.close()
 			print(f"\nTotal stock of '{product_name}' across all stores: {result[0]}")
-		
-		return_choice = int(input("\nWould you like to do another operation?\n" +
-						"1. Yes\n" +
-						"2. No\n" + "\n"))
-		if return_choice == 1: 
-			main.main()
 
 		else:
 			print("Invalid choice, please enter 1 or 2.")
+
+	return_choice = int(input("\nWould you like to do another operation?\n" +
+				"1. Yes\n" +
+				"2. No\n" + "\n"))
+	if return_choice == 1: 
+		main.main()
+	else:
+		exit()
+
+def customer_purchase_amount(conn):
+	return_choice = -1
+	start_date = read_string("\nStart Date (YYYY-MM-DD): ")
+	end_date = read_string("\nEnd Date (YYYY-MM-DD): ")
+	customerID = read_int("Customer ID: ")
+
+	sql_customer_purchase_records = """
+		SELECT SUM(P.SellPrice) AS Amount_Spent, t.CustomerID
+		FROM Transaction t
+		INNER JOIN PurchasedProduct pp ON t.TransactionID = pp.TransactionID
+		INNER JOIN Product p ON pp.ProductID = p.ProductID
+		WHERE (t.PurchaseDate BETWEEN (%s) AND (%s)) AND t.CustomerID = (%s);
+	"""
+
+	cur = conn.cursor()
+	cur.execute(sql_customer_purchase_records, (start_date, end_date, customerID))
+	result = cur.fetchone()
+	cur.close()
+	print(f"\nPurchase amount for Customer {customerID} between {start_date} and {end_date}: {result[0]}")
+
+	return_choice = int(input("\nWould you like to do another operation?\n" +
+				"1. Yes\n" +
+				"2. No\n" + "\n"))
+	if return_choice == 1: 
+		main.main()
+	else:
+		exit()
