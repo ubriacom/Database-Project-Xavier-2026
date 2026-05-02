@@ -1,4 +1,5 @@
 import pymysql.cursors
+import main
 
 def read_string(prompt):
 	""" 
@@ -30,36 +31,46 @@ def read_float(prompt):
 
 
 def reports(conn):
-    choice = -1
-    while choice < 1 or choice > 3:
-        choice = int(input("\nWhat reports are needed?\n" +
-                           "1. Total sales by day, month, or year\n" +
-                           "2. Merchandise stock reporting\n" +
-                           "3. Customer total purchase amount for a given time period\n" + "\n"))
-        if choice == 1:
-            reports_date_choice(conn)
-        elif choice == 2:
-            stock_reporting(conn)
-        elif choice == 3:
-            start_date = read_string("\nStart Date: ")
-            end_date = read_string("\nEnd Date: ")
-            customerID = read_int("Customer ID: ")
+	choice = -1
+	return_choice = -1
+	while choice < 1 or choice > 3:
+		choice = int(input("\nWhat reports are needed?\n" +
+						"1. Total sales by day, month, or year\n" +
+						"2. Merchandise stock reporting\n" +
+						"3. Customer total purchase amount for a given time period\n" + "\n"))
+		if choice == 1:
+			reports_date_choice(conn)
+		elif choice == 2:
+			stock_reporting(conn)
+		elif choice == 3:
+			start_date = read_string("\nStart Date (YYYY-MM-DD): ")
+			end_date = read_string("\nEnd Date (YYYY-MM-DD): ")
+			customerID = read_int("Customer ID: ")
 
-            sql_customer_purchase_records = """
-                SELECT SUM(P.SellPrice) AS Amount_Spent, t.CustomerID
-                FROM Transaction t
-                INNER JOIN PurchasedProduct pp ON t.TransactionID = pp.TransactionID
-                INNER JOIN Product p ON pp.ProductID = p.ProductID
-                WHERE (t.PurchaseDate BETWEEN (%s) AND (%s)) AND t.CustomerID = (%s);
-            """
-            conn.begin()
-            cur = conn.cursor()
-            cur.execute(sql_customer_purchase_records, (start_date, end_date, customerID))
-            conn.commit()
+			sql_customer_purchase_records = """
+				SELECT SUM(P.SellPrice) AS Amount_Spent, t.CustomerID
+				FROM Transaction t
+				INNER JOIN PurchasedProduct pp ON t.TransactionID = pp.TransactionID
+				INNER JOIN Product p ON pp.ProductID = p.ProductID
+				WHERE (t.PurchaseDate BETWEEN (%s) AND (%s)) AND t.CustomerID = (%s);
+			"""
+			cur = conn.cursor()
+			cur.execute(sql_customer_purchase_records, (start_date, end_date, customerID))
+			result = cur.fetchone()
+			cur.close()
+			print(f"\nPurchase amount for Customer {customerID} between {start_date} and {end_date}: {result[0]}")
+
+		return_choice = int(input("\nWould you like to do another operation?\n" +
+						"1. Yes\n" +
+						"2. No\n" + "\n"))
+		if return_choice == 1: 
+			main.main()
+
 
 
 def reports_date_choice(conn):
 	choice = -1
+	return_choice = -1
 	while choice < 1 or choice > 3:
 		choice = int(input("\nDo you need the sales by day, month, or year?\n" +
 						   "1. Day\n" +
@@ -113,6 +124,12 @@ def reports_date_choice(conn):
 			result = cur.fetchone()
 			cur.close()
 			print(f"\nSales for Store {storeID} in {year}: {result[0]}")
+		
+		return_choice = int(input("\nWould you like to do another operation?\n" +
+						"1. Yes\n" +
+						"2. No\n" + "\n"))
+		if return_choice == 1: 
+			main.main()
 
 		else:
 			print("Invalid choice, please enter 1, 2, or 3.")
@@ -120,15 +137,45 @@ def reports_date_choice(conn):
 
 def stock_reporting(conn):
 	choice = -1
+	return_choice = -1
 	while choice < 1 or choice > 2:
-		choice = int(input("\nDo you want to check a product across one store or all stores\n" +
-					 "1. One store\n" +
-					 "2. All stores\n" + "\n"))
-		if choice == 1:
-			pass
-		elif choice == 2:
-			pass
-		
+		choice = int(input("\nDo you want to check a product across one store or all stores?\n" +
+						   "1. One store\n" +
+						   "2. All stores\n\n"))
 
-def customer_records(conn):
-	pass
+		if choice == 1:
+			storeID = read_int("Store ID: ")
+			product_name = read_string("Product Name: ")
+			sql = """
+				SELECT COUNT(*) AS Stock
+				FROM Product
+				WHERE StoreID = %s
+				AND Name = %s;
+			"""
+			cur = conn.cursor()
+			cur.execute(sql, (storeID, product_name))
+			result = cur.fetchone()
+			cur.close()
+			print(f"\nStock of '{product_name}' at Store {storeID}: {result[0]}")
+
+		elif choice == 2:
+			product_name = read_string("Product Name: ")
+			sql = """
+				SELECT COUNT(*) AS TotalStock
+				FROM Product
+				WHERE Name = %s;
+			"""
+			cur = conn.cursor()
+			cur.execute(sql, (product_name,))
+			result = cur.fetchone()
+			cur.close()
+			print(f"\nTotal stock of '{product_name}' across all stores: {result[0]}")
+		
+		return_choice = int(input("\nWould you like to do another operation?\n" +
+						"1. Yes\n" +
+						"2. No\n" + "\n"))
+		if return_choice == 1: 
+			main.main()
+
+		else:
+			print("Invalid choice, please enter 1 or 2.")
