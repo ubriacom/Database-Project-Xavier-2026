@@ -1,4 +1,5 @@
 import pymysql.cursors
+from datetime import date
 
 
 def read_string(prompt):
@@ -207,19 +208,75 @@ def search_customer(conn):
 
 
 def enter_member(conn):
-	pass
+	customerID = read_int("\nCustomer ID: ")
+	first_name = read_string("\nFirst Name: ")
+	last_name = read_string("\nLast Name: ")
+	email = read_string("\nEmail: ")
+	phone_number = read_string("\nPhone Number: ")
+	address = read_string("\nAddress: ")
+	storeID = read_int("\nStore ID: ")
+	staffID = read_int("\n Staff ID: ")
+	sign_up_date = date.today().strftime("%Y-%m-%d")
+
+	sql_enter_member = """
+	INSERT INTO Member (CustomerID, FirstName, LastName, Email, PhoneNumber, Address)
+	VALUES (%s, %s, %s, %s, %s, %s);
+	"""
+	sql_enter_sign_up = """
+	INSERT INTO SignUp(CustomerID, StoreID, StaffID, SignUpDate) VALUES(%s, %s, %s, %s);
+	"""
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_enter_member, (customerID, first_name, last_name, email, phone_number, address))
+	cur.execute(sql_enter_sign_up, (customerID, storeID, staffID, sign_up_date))
+	conn.commit()
+
 
 
 def update_member(conn):
-	pass
+	first_name = read_string("\nFirst Name: ")
+	last_name = read_string("\nLast Name: ")
+	email = read_string("\nEmail: ")
+	phone_number = read_string("\nPhone Number: ")
+	address = read_string("\nAddress: ")
+	active_status = read_string("\nTRUE OR FALSE (ALL CAPS): ")
+	customerID = read_int("\nCustomer ID: ")
 
+	sql_update_member = """
+	UPDATE Member
+	SET FirstName = %s, LastName = %s, Email = %s, PhoneNumber = %s, Address = %s, ActiveStatus = %s
+	WHERE CustomerID = %s;
+	"""
+
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_update_member, (first_name, last_name, email, phone_number, address, active_status, customerID))
+	conn.commit()
 
 def delete_member(conn):
-	pass
+	customerID = read_int("\nCustomer ID: ")
+
+	sql_delete_member = """
+	DELETE FROM Member WHERE CustomerID = %s;
+	"""
+
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_delete_member, (customerID))
+	conn.commit()
 
 
 def search_member(conn):
-	pass
+	customerID = read_int("\nCustomer ID: ")
+
+	sql_search_member = """
+	SELECT * FROM Member WHERE CustomerID = %s;
+	"""
+
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_search_member, (customerID))
+	conn.commit()
 
 
 
