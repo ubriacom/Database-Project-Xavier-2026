@@ -151,8 +151,6 @@ def record_new_store(conn):
         conn.commit()
 		
 
-
-
 def update_store(conn):
     managerID = read_int("Manager ID: ")
     address = read_string("Address: ")

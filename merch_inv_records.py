@@ -32,10 +32,15 @@ def merch_inv_records(conn):
 	choice = -1
 	while choice < 1 or choice > 3: #main menu of this section
 		choice = int(input("\nWhat merchandise and inventory records would you like to change?\n" +
-						"1. Enter, Update, or Delete information about products\n" +
-						"2. Enter, Update, or Delete information about discounts\n" +
-						"3. Increase, Remove, or search inventory for a specific product\n" + "\n"))
-	return choice
+						"1. Enter, Update, Delete, or Search information about products\n" +
+						"2. Enter, Update, Delete, or Search information about discounts\n" +
+						"3. Increase, Remove, or Search inventory for a specific product\n" + "\n"))
+	if choice == 1:
+		product_info(conn)
+	elif choice == 2:
+		discount_info(conn)
+	elif choice == 3:
+		manage_inv(conn)
 
 
 def product_info(conn):
@@ -170,3 +175,30 @@ def search_discount(conn):
 	cur = conn.cursor()
 	cur.execute(sql_search_discount, (discount_id))
 	conn.commit()
+
+
+def manage_inv(conn):
+	choice = -1
+	while choice < 1 or choice > 3:
+		choice = int(input("\nWould you like to increase, remove, or search inventory?\n" +
+					"1. Increase\n" +
+					"2. Remove\n" +
+					"3. Search\n" + "\n"))
+		if choice == 1:
+			increase_inv(conn)
+		elif choice == 2:
+			remove_inv(conn)
+		elif choice == 3:
+			search_inv(conn)
+
+
+def increase_inv(conn):
+	pass
+
+
+def remove_inv(conn):
+	pass
+
+
+def search_inv(conn):
+	pass
