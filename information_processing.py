@@ -194,20 +194,50 @@ def search_store(conn):
 
 
 def enter_customer(conn):
-	pass
+	sql_enter_customer = """
+	INSERT INTO Customer () VALUES (); 
+	"""
+
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_enter_customer)
+	conn.commit()
 
 
 def update_customer(conn):
-	pass
+	old_customerID = read_int("\nWhat is the current customer ID: ")
+	new_customerID = read_int("\nWhat is the new customer ID: ")
 
+	sql_update_customer = """
+	UPDATE Customer SET CustomerID = %s WHERE CustomerID = %s;
+	"""
+
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_update_customer, (new_customerID, old_customerID))
+	conn.commit()
 
 def delete_customer(conn):
-	pass
+	customerID = read_int("\nWhat is the customer ID you want to delete: ")
 
+	sql_delete_customer = """
+	DELTE FROM Customer WHERE CustomerID = %s;
+	"""
+
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_delete_customer, (customerID,))
+	conn.commit()
 
 def search_customer(conn):
-	pass
+	customerID = read_int("\nWhat is the customer ID to search for: ")
+	sql_search_customer = """
+	SELECT * FROM Customer WHERE CustomerID = %s
+	"""
 
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_search_customer, (customerID,))
 
 def enter_member(conn):
 	customerID = read_int("\nCustomer ID: ")
