@@ -32,10 +32,15 @@ def merch_inv_records(conn):
 	choice = -1
 	while choice < 1 or choice > 3: #main menu of this section
 		choice = int(input("\nWhat merchandise and inventory records would you like to change?\n" +
-						"1. Enter, Update, or Delete information about products\n" +
-						"2. Enter, Update, or Delete information about discounts\n" +
-						"3. Increase, Remove, or search inventory for a specific product\n" + "\n"))
-	return choice
+						"1. Enter, Update, Delete, or Search information about products\n" +
+						"2. Enter, Update, Delete, or Search information about discounts\n" +
+						"3. Increase, Remove, or Search inventory for a specific product\n" + "\n"))
+	if choice == 1:
+		product_info(conn)
+	elif choice == 2:
+		discount_info(conn)
+	elif choice == 3:
+		manage_inv(conn)
 
 
 def product_info(conn):
@@ -91,11 +96,13 @@ def enter_product(conn):
 	cur.execute(sql_enter_product, (store_id, name, buy_price, sell_price))
 	conn.commit()
 #simmilar concept to the previous function for all the other functions
+
+
 def update_product(conn):
 	name = read_string("\nEnter the name of the product you want to update: ") #specify just so the user does not think they are updating an ID
 	sell_price = read_float("\nSell Price: ")
 	sql_update_product = """
-        UPDATE Product SET Price = (%s) WHERE Name = (%s);
+        UPDATE Product SET SellPrice = (%s) WHERE Name = (%s);
 		"""
 	conn.begin()
 	cur = conn.cursor()
@@ -109,7 +116,7 @@ def delete_product(conn):
 		"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_delete_product, (product_id))
+	cur.execute(sql_delete_product, (product_id,))
 	conn.commit()
 
 def search_product(conn):
@@ -119,9 +126,12 @@ def search_product(conn):
 		"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_search_product, (product_id))
+	cur.execute(sql_search_product, (product_id,))
 	conn.commit()
 
+	results = cur.fetchall()
+	for row in results:
+		print(row)
 
 
 def enter_discount(conn):
@@ -130,7 +140,7 @@ def enter_discount(conn):
 	end_date = read_string("\nEnd Date: ")
 
 	sql_enter_discount = """
-        INSERT INTO Discount (Amount, StartDate, EndDate) VALUES ((%s), '2026-8-31', '2026-10-15');
+        INSERT INTO Discount (Amount, StartDate, EndDate) VALUES (%s, %s, %s);
 		"""
 	conn.begin()
 	cur = conn.cursor()
@@ -158,15 +168,45 @@ def delete_discount(conn):
 		"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_delete_discount, (discount_id))
+	cur.execute(sql_delete_discount, (discount_id,))
 	conn.commit()
 
 def search_discount(conn):
 	discount_id = read_int("\nDiscount ID: ")
 	sql_search_discount = """
-        SELECT * FROM Discount WHERE DiscountID = (%s);;
+        SELECT * FROM Discount WHERE DiscountID = (%s);
 		"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_search_discount, (discount_id))
+	cur.execute(sql_search_discount, (discount_id,))
 	conn.commit()
+
+	results = cur.fetchall()
+	for row in results:
+		print(row)
+
+def manage_inv(conn):
+	choice = -1
+	while choice < 1 or choice > 3:
+		choice = int(input("\nWould you like to increase, remove, or search inventory?\n" +
+					"1. Increase\n" +
+					"2. Remove\n" +
+					"3. Search\n" + "\n"))
+		if choice == 1:
+			increase_inv(conn)
+		elif choice == 2:
+			remove_inv(conn)
+		elif choice == 3:
+			search_inv(conn)
+
+
+def increase_inv(conn):
+	pass
+
+
+def remove_inv(conn):
+	pass
+
+
+def search_inv(conn):
+	pass
