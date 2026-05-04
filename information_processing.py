@@ -238,6 +238,7 @@ def search_customer(conn):
 	conn.begin()
 	cur = conn.cursor()
 	cur.execute(sql_search_customer, (customerID,))
+	conn.commit()
 
 def enter_member(conn):
 	customerID = read_int("\nCustomer ID: ")
