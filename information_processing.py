@@ -198,52 +198,62 @@ def search_store(conn): # Searches existing stores.
         print(row)
 
 
-def enter_customer(conn): # Enters a new customer
-	sql_enter_customer = """
-	INSERT INTO Customer () VALUES (); 
-	"""
+def enter_customer(conn):
+    sql_enter_customer = """
+    INSERT INTO Customer () VALUES (); 
+    """
 
-	conn.begin()
-	cur = conn.cursor()
-	cur.execute(sql_enter_customer)
-	conn.commit()
+    conn.begin()
+    cur = conn.cursor()
+    cur.execute(sql_enter_customer)
+    conn.commit()
+    print("Customer successfully added.")
 
 
-def update_customer(conn): # Updates an existing customer
-	old_customerID = read_int("\nWhat is the current customer ID: ")
-	new_customerID = read_int("\nWhat is the new customer ID: ")
+def update_customer(conn):
+    old_customerID = read_int("\nWhat is the current customer ID: ")
+    new_customerID = read_int("\nWhat is the new customer ID: ")
 
-	sql_update_customer = """
-	UPDATE Customer SET CustomerID = %s WHERE CustomerID = %s;
-	"""
+    sql_update_customer = """
+    UPDATE Customer SET CustomerID = %s WHERE CustomerID = %s;
+    """
 
-	conn.begin()
-	cur = conn.cursor()
-	cur.execute(sql_update_customer, (new_customerID, old_customerID))
-	conn.commit()
+    conn.begin()
+    cur = conn.cursor()
+    cur.execute(sql_update_customer, (new_customerID, old_customerID))
+    conn.commit()
+    print("Customer successfully updated.")
 
-def delete_customer(conn): # Deletes an existing customer.
-	customerID = read_int("\nWhat is the customer ID you want to delete: ")
+def delete_customer(conn):
+    customerID = read_int("\nWhat is the customer ID you want to delete: ")
 
-	sql_delete_customer = """
-	DELTE FROM Customer WHERE CustomerID = %s;
-	"""
+    sql_delete_customer = """
+    DELTE FROM Customer WHERE CustomerID = %s;
+    """
 
-	conn.begin()
-	cur = conn.cursor()
-	cur.execute(sql_delete_customer, (customerID,))
-	conn.commit()
+    conn.begin()
+    cur = conn.cursor()
+    cur.execute(sql_delete_customer, (customerID,))
+    conn.commit()
+    print("Customer successfully deleted.")
 
-def search_customer(conn): # Searches customers based on their ID
-	customerID = read_int("\nWhat is the customer ID to search for: ")
-	sql_search_customer = """
-	SELECT * FROM Customer WHERE CustomerID = %s
-	"""
+def search_customer(conn):
+    customerID = read_int("\nWhat is the customer ID to search for: ")
+    sql_search_customer = """
+    SELECT * FROM Customer WHERE CustomerID = %s
+    """
 
-	conn.begin()
-	cur = conn.cursor()
-	cur.execute(sql_search_customer, (customerID,))
-	conn.commit()
+    conn.begin()
+    cur = conn.cursor()
+    cur.execute(sql_search_customer, (customerID,))
+    conn.commit()
+
+    results = cur.fetchall()
+    if results:
+        for row in results:
+            print(row)
+    else:
+        print("No customer found with that ID.")
 
 def enter_member(conn): # Enters a new member
 	customerID = read_int("\nCustomer ID: ")
