@@ -85,6 +85,7 @@ def enter_product(conn):
 	name = read_string("\nName: ")
 	buy_price = read_float("\nBuy Price: ")
 	sell_price = read_float("\nSell Price: ")
+	quantity = read_int("\nQuantity: ")
 
 #querry
 	sql_enter_product = """
