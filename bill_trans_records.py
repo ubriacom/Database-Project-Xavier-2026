@@ -59,33 +59,33 @@ def bill_trans_records(conn):
 # Should Return: an actual value
 def member_reward_notice(conn):
   # we should use USER(), however this lets us test without having to have multiple users
-  customer_id = -1 
-  transaction_year = -1
-  transaction_month = -1
+	customer_id = -1 
+	transaction_year = -1
+	transaction_month = -1
   
   # make sure its a valid id
-  while customer_id < 0:
-    customer_id = read_int("Input Customer ID: ")
-    if customer_id < 0:
-      print("Customer IDs cannot be negative, please try again")
+	while customer_id < 0:
+		customer_id = read_int("Input Customer ID: ")
+	if customer_id < 0:
+		print("Customer IDs cannot be negative, please try again")
     
   # make sure it's a valid year
   # for this dataset, the earliest it will go is 2000, and the latest it will go is 2026
-  while transaction_year < 2000 or transaction_year > 2026:
-    transaction_year = read_int("Input Year (4 digits): ")
-    if transaction_year < 2000 or transaction_year > 2026:
-      print("Please input a valid year (years 2000-2026)")
+	while transaction_year < 2000 or transaction_year > 2026:
+		transaction_year = read_int("Input Year (4 digits): ")
+	if transaction_year < 2000 or transaction_year > 2026:
+		print("Please input a valid year (years 2000-2026)")
   
       
   # make sure it's a valid month
-  while transaction_month < 1 or transaction_month > 12:
-    transaction_month = read_int("Input Month (input number from 1-12: ")
-    if transaction_month < 1 or transaction_month > 12:
-      print("Please input a value between 1 and 12, according to the month.")
+	while transaction_month < 1 or transaction_month > 12:
+		transaction_month = read_int("Input Month (input number from 1-12: ")
+	if transaction_month < 1 or transaction_month > 12:
+		print("Please input a value between 1 and 12, according to the month.")
       
   # do the same thing we did in Transaction Information, except we'll just grab
   # the total money spent :
-  sql_statement = """
+	sql_statement = """
   	SELECT DISTINCT p.Name, MAX(p.SellPrice) AS Individual_Price, MAX(pp.Quantity) AS Total_Quantity, MAX(p.SellPrice * pp.Quantity) AS Raw_Amount_Spent,
   	SUM(d.Amount) AS Discount, MAX(p.SellPrice * pp.Quantity) * (100-SUM(d.Amount))/100 AS Amount_Spent
   	FROM Transaction t 
@@ -98,35 +98,35 @@ def member_reward_notice(conn):
   	WHERE Discount.StartDate < CURDATE() AND CURDATE() < Discount.EndDate ) 
   	GROUP BY p.ProductID;
   """
-  try:
-  	  # start our transaction
-  	  conn.begin() 
-  	  cur = conn.cursor(dictionary=True) # makes it nicer to read
+	try:
+		# start our transaction
+		conn.begin() 
+		cur = conn.cursor(dictionary=True) # makes it nicer to read
   	  
-  	  cur.execute(sql_statement, (transaction_year,transaction_month,customer_id))
+		cur.execute(sql_statement, (transaction_year,transaction_month,customer_id))
   	  
-  	  results = cur.fetchall() # get our results
+		results = cur.fetchall() # get our results
 
-      if (len(results) == 0):
+		if (len(results) == 0):
         # no data! let the user known
-        raise Exception(f"No data found for customer on given date!")
+			raise Exception(f"No data found for customer on given date!")
       
       # calculate total
-      total_spent = 0
-      for row in results:
-        total_spent += row["Amount_Spent"] or row["Raw_Amount_Spent"] or 0
+		total_spent = 0
+		for row in results:
+			total_spent += row["Amount_Spent"] or row["Raw_Amount_Spent"] or 0
         
       # round and calculate rewards
-      total_spent = round(total_spent,2)
-      total_rewards = total_spent * 0.02 # 2% in rewards :D
+		total_spent = round(total_spent,2)
+		total_rewards = total_spent * 0.02 # 2% in rewards :D
       
-      print(f"Total Customer Rewards for Customer Id {customer_id} on year {transaction_year} and month {transaction_month}: { total_rewards }")
+		print(f"Total Customer Rewards for Customer Id {customer_id} on year {transaction_year} and month {transaction_month}: { total_rewards }")
       
-    except Exception as err:
-      print("Error: ", err)
-      conn.rollback() # same as ROLLBACK in SQL
+	except Exception as err:
+		print("Error: ", err)
+		conn.rollback() # same as ROLLBACK in SQL
   
-  	else: # this only triggers if the entire try block was successful
+	else: # this only triggers if the entire try block was successful
   		conn.commit() # same as COMMIT in SQL
   
   
@@ -135,87 +135,87 @@ def member_reward_notice(conn):
 # EXAMPLE: EmployeeId = 1, Year = 2018, Quarter = 3
 # Should Return: 50 (2 sign ups -> 50 dollar bonus)
 def employee_reward_check(conn):
-  employee_id = -1 
-  transaction_year = -1
-  transaction_quarter = -1
+	employee_id = -1 
+	transaction_year = -1
+	transaction_quarter = -1
   
   # make sure its a valid id
-  while employee_id < 0:
-    employee_id = read_int("Input Employee ID: ")
-    if employee_id < 0:
-      print("Employee IDs cannot be negative, please try again")
+	while employee_id < 0:
+		employee_id = read_int("Input Employee ID: ")
+		if employee_id < 0:
+			print("Employee IDs cannot be negative, please try again")
     
   # make sure it's a valid year
   # for this dataset, the earliest it will go is 2000, and the latest it will go is 2026
-  while transaction_year < 2000 or transaction_year > 2026:
-    transaction_year = read_int("Input Year (4 digits): ")
-    if transaction_year < 2000 or transaction_year > 2026:
-      print("Please input a valid year (years 2000-2026)")
+	while transaction_year < 2000 or transaction_year > 2026:
+		transaction_year = read_int("Input Year (4 digits): ")
+		if transaction_year < 2000 or transaction_year > 2026:
+			print("Please input a valid year (years 2000-2026)")
       
   # make sure it's a valid quarter
-  while transaction_quarter < 1 or transaction_quarter > 12:
-    transaction_quarter = read_int("Quarter 1: Spring\nQuarter 2: Summer\nQuarter 3: Fall\nQuarter 4: Winter\nInput Quarter (input number from 1-4): ")
-    if transaction_quarter < 1 or transaction_quarter > 12:
-      print("Please input a value between 1 and 4, according to the quarter.")
+	while transaction_quarter < 1 or transaction_quarter > 12:
+		transaction_quarter = read_int("Quarter 1: Spring\nQuarter 2: Summer\nQuarter 3: Fall\nQuarter 4: Winter\nInput Quarter (input number from 1-4): ")
+		if transaction_quarter < 1 or transaction_quarter > 12:
+			print("Please input a value between 1 and 4, according to the quarter.")
       
   # to make it easier, let's just convert our "quarter" to 3 month values
-  qMonth1 = 0
-  qMonth2 = 0
-  qMonth3 = 0
+	qMonth1 = 0
+	qMonth2 = 0
+	qMonth3 = 0
   
-  if transaction_quarter = 1: # spring months
-    qMonth1 = 3
-    qMonth2 = 4
-    qMonth3 = 5
-  elif transaction_quarter = 2: # summer months
-    qMonth1 = 6
-    qMonth2 = 7
-    qMonth3 = 8
-  elif transaction_quarter = 3: # fall months
-    qMonth1 = 9
-    qMonth2 = 10
-    qMonth3 = 11
-  else # fall months
-    qMonth1 = 12
-    qMonth2 = 1
-    qMonth3 = 2
+	if transaction_quarter == 1: # spring months
+		qMonth1 = 3
+		qMonth2 = 4
+		qMonth3 = 5
+	elif transaction_quarter == 2: # summer months
+		qMonth1 = 6
+		qMonth2 = 7
+		qMonth3 = 8
+	elif transaction_quarter == 3: # fall months
+		qMonth1 = 9
+		qMonth2 = 10
+		qMonth3 = 11
+	else: # fall months
+		qMonth1 = 12
+		qMonth2 = 1
+		qMonth3 = 2
     
   # a small query?! impossible
-  sql_statement = """
+	sql_statement = """
       SELECT COUNT(StaffID) AS SignUps, COUNT(StaffID)*25 AS Bonus
       FROM Signup s
       WHERE s.StaffID = %s AND YEAR(s.SignUpDate) = %s AND
       (MONTH(s.SignUpDate) IN (%s,%s,%s));
      """
      
-  try:
+	try:
   	  # start our transaction
-  	  conn.begin() 
-  	  cur = conn.cursor(dictionary=True) # makes it nicer to read
+		conn.begin() 
+		cur = conn.cursor(dictionary=True) # makes it nicer to read
   	  
-  	  cur.execute(sql_statement, (employee_id,transaction_year,qMonth1,qMonth2,qMonth3))
+		cur.execute(sql_statement, (employee_id,transaction_year,qMonth1,qMonth2,qMonth3))
   	  
-  	  results = cur.fetchall() # get our results
+		results = cur.fetchall() # get our results
 
-      if (len(results) == 0):
+		if (len(results) == 0):
         # no data! let the user known
-        raise Exception(f"No data found for employee on given date!")
+			raise Exception(f"No data found for employee on given date!")
       
       # calculate total (reusing the code from others to make it simpler)
-      total_bonus = 0
-      total_signups = 0
-      for row in results:
-        total_bonus += row["Bonus"] or 0
-        total_signups += row["SignUps"] or 0
+		total_bonus = 0
+		total_signups = 0
+		for row in results:
+			total_bonus += row["Bonus"] or 0
+			total_signups += row["SignUps"] or 0
         
       # print the bonus!
-      print(f"Employee signed up {total_signups} in quarter {transaction_quarter}, {transaction_year} and earned ${total_bonus} !")
+		print(f"Employee signed up {total_signups} in quarter {transaction_quarter}, {transaction_year} and earned ${total_bonus} !")
       
-    except Exception as err:
-      print("Error: ", err)
-      conn.rollback() # same as ROLLBACK in SQL
+	except Exception as err:
+		print("Error: ", err)
+		conn.rollback() # same as ROLLBACK in SQL
   
-  	else: # this only triggers if the entire try block was successful
+	else: # this only triggers if the entire try block was successful
   		conn.commit() # same as COMMIT in SQL
      
 
@@ -225,13 +225,13 @@ def employee_reward_check(conn):
 # Should Return: a purchase of 5 items
 def transaction_information(conn):
     # get the transaction id
-    transaction_id = -1 
+	transaction_id = -1 
     
   	# make sure the transaction id is valid
-  	while transaction_id < 0:
-  	  transaction_id = read_int("Transaction ID: ")
-  	  if transaction_id < 0:
-  	    print("Transaction ID must be positive!")
+	while transaction_id < 0:
+		transaction_id = read_int("Transaction ID: ")
+		if transaction_id < 0:
+			print("Transaction ID must be positive!")
  	
 	# create our large SQL statement (boo! im a big block of code!)
 	sql_statement = f"""
@@ -268,7 +268,7 @@ def transaction_information(conn):
 			print(row)
 			total_spent += row["Amount_Spent"] or row["Raw_Amount_Spent"] or 0
         
-    print(f"Total money spent in transaction: { round(total_spent,2) }")
+		print(f"Total money spent in transaction: { round(total_spent,2) }")
 
 	except Exception as err:
 		print("Error: ", err)
