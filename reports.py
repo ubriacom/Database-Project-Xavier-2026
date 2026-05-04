@@ -1,6 +1,8 @@
 import pymysql.cursors
 import main
 
+# This file deals with the 4th (Reports) part of the main query, prints 
+
 def read_string(prompt):
 	""" 
 	Reads a string from the user 
