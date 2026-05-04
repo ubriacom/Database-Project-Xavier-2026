@@ -1,6 +1,11 @@
 import pymysql.cursors
 from datetime import date
 
+"""
+This function takes care of all the information processing related to stores,
+customers, members, and staff
+"""
+
 
 def read_string(prompt):
 	""" 
