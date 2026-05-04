@@ -34,7 +34,7 @@ def create_connection(database_name):
 	try:
 		conn = pymysql.connect(
 			user='root',
-			password='Atlanticocean1', # TODO: add your password here 
+			password='Stinger1Tarot3#', # TODO: add your password here #Atlanticocean1
 			host='127.0.0.1',
 			database=database_name) 
 			# autocommit = false by default

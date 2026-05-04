@@ -110,7 +110,7 @@ def update_product(conn):
 	cur.execute(sql_update_product, (sell_price, name))
 	conn.commit()
 
-def delete_product(conn):
+def delete_product(conn): #only deletes products that are not being sold.
 	product_id = read_int("\nProduct ID: ")
 	sql_delete_product = """
         DELETE FROM Product WHERE ProductID = (%s);
@@ -136,7 +136,7 @@ def search_product(conn):
 
 
 def enter_discount(conn):
-	amount = read_float("\nName: ")
+	amount = read_float("\nAmount: ")
 	start_date = read_string("\nStart Date: ")
 	end_date = read_string("\nEnd Date: ")
 
@@ -150,7 +150,7 @@ def enter_discount(conn):
 
 def update_discount(conn):
 	discount_id = read_string("\nEnter the ID of the discount you want to update: ")
-	amount = read_float("\nName: ")
+	amount = read_float("\nAmount: ")
 	start_date = read_string("\nStart Date: ")
 	end_date = read_string("\nEnd Date: ")
 
@@ -191,7 +191,7 @@ def manage_inv(conn):
 	while choice < 1 or choice > 3:
 		choice = int(input("\nWould you like to increase, remove, or search inventory?\n" +
 					"1. Increase\n" +
-					"2. Update\n" +
+					"2. Remove\n" +
 					"3. Search\n" + "\n"))
 		if choice == 1:
 			increase_inv(conn)
@@ -202,8 +202,8 @@ def manage_inv(conn):
 
 
 def increase_inv(conn):
-	product_id = read_int("\nProduct ID")
-	increase_count = read_int("\nHow much would you like to add:") #determines how much to get added
+	product_id = read_int("\nProduct ID: ")
+	increase_count = read_int("\nHow much would you like to add: ") #determines how much to get added
 	sql_increase_inv = """
         UPDATE Product SET Quantity = Quantity + (%s) WHERE ProductID = (%s); 
 		"""
@@ -214,8 +214,8 @@ def increase_inv(conn):
 
 
 def remove_inv(conn): #had to change it from a remove because of how we find out invetory in the database.
-	product_id = read_int("\nProduct ID")
-	remove_count = read_int("\nHow much would you like to remove:") #determines how much to get removed
+	product_id = read_int("\nProduct ID: ")
+	remove_count = read_int("\nHow much would you like to remove: ") #determines how much to get removed
 	sql_increase_inv = """
         UPDATE Product SET Quantity = Quantity - (%s) WHERE ProductID = (%s); 
 		"""
