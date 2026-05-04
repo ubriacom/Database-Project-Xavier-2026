@@ -1,6 +1,11 @@
 import pymysql.cursors
 from datetime import date
 
+"""
+This function takes care of all the information processing related to stores,
+customers, members, and staff
+"""
+
 
 def read_string(prompt):
 	""" 
@@ -30,7 +35,7 @@ def read_float(prompt):
 	return float(input(prompt))
 
 
-def information_processing(conn):
+def information_processing(conn): # Gives the user a choice of which function they would like to do.
 	choice =-1
 	while choice < 1 or choice > 4:
 		choice = int(input("\nWhat information processing would you like to perform?\n" +
@@ -48,7 +53,7 @@ def information_processing(conn):
 		staff_info(conn)
 		
 
-def store_info(conn):
+def store_info(conn): # Asks user which function they would like to do and then calls the function accordingly
 	choice = -1
 	while choice < 1 or choice > 4:
 		choice = int(input("\nWould you like to enter, update or delete information?\n" +
@@ -66,7 +71,7 @@ def store_info(conn):
 		search_store(conn)
 
 
-def customer_info(conn):
+def customer_info(conn): # Asks user which function they would like to do and then calls the function accordingly
 	choice = -1
 	while choice < 1 or choice > 4:
 		choice = int(input("\nWould you like to enter, update delete, or search information?\n" +
@@ -84,7 +89,7 @@ def customer_info(conn):
 		search_customer(conn)
 		
 
-def member_info(conn):
+def member_info(conn): # Asks user which function they would like to do and then calls the function accordingly
 	choice = -1
 	while choice < 1 or choice > 4:
 		choice = int(input("\nWould you like to enter, update delete, or search information?\n" +
@@ -104,7 +109,7 @@ def member_info(conn):
 
 		
 
-def staff_info(conn):
+def staff_info(conn): # Asks user which function they would like to do and then calls the function accordingly
 	choice = -1
 	while choice < 1 or choice > 4:
 		choice = int(input("\nWould you like to enter, update or delete information?\n" +
@@ -124,7 +129,7 @@ def staff_info(conn):
 
 
 
-def record_new_store(conn):
+def record_new_store(conn): # adds a new store
     managerID = read_int("Manager ID: ")
     address = read_string("Address: ")
     phone_number = read_string("Phone Number in (123)-456-7890 format: ")
@@ -151,7 +156,7 @@ def record_new_store(conn):
         conn.commit()
 		
 
-def update_store(conn):
+def update_store(conn): # Updates an existing store.
     managerID = read_int("Manager ID: ")
     address = read_string("Address: ")
     phone_number = read_string("Phone Number in (123)-456-7890 format: ")
@@ -166,7 +171,7 @@ def update_store(conn):
     cur.execute(sql_update_store, (managerID, address, phone_number, storeID))
     conn.commit()
 
-def delete_store(conn):
+def delete_store(conn): # Deletes an existing store
     storeID = read_int("Store ID: ")
 
     sql_delete_store = """ 
@@ -177,7 +182,7 @@ def delete_store(conn):
     cur.execute(sql_delete_store, (storeID,))
     conn.commit()
 
-def search_store(conn):
+def search_store(conn): # Searches existing stores.
     storeID = read_int("Store ID: ")
 	
     sql_search_store = """
@@ -193,7 +198,7 @@ def search_store(conn):
         print(row)
 
 
-def enter_customer(conn):
+def enter_customer(conn): # Enters a new customer
 	sql_enter_customer = """
 	INSERT INTO Customer () VALUES (); 
 	"""
@@ -204,7 +209,7 @@ def enter_customer(conn):
 	conn.commit()
 
 
-def update_customer(conn):
+def update_customer(conn): # Updates an existing customer
 	old_customerID = read_int("\nWhat is the current customer ID: ")
 	new_customerID = read_int("\nWhat is the new customer ID: ")
 
@@ -217,7 +222,7 @@ def update_customer(conn):
 	cur.execute(sql_update_customer, (new_customerID, old_customerID))
 	conn.commit()
 
-def delete_customer(conn):
+def delete_customer(conn): # Deletes an existing customer.
 	customerID = read_int("\nWhat is the customer ID you want to delete: ")
 
 	sql_delete_customer = """
@@ -229,7 +234,7 @@ def delete_customer(conn):
 	cur.execute(sql_delete_customer, (customerID,))
 	conn.commit()
 
-def search_customer(conn):
+def search_customer(conn): # Searches customers based on their ID
 	customerID = read_int("\nWhat is the customer ID to search for: ")
 	sql_search_customer = """
 	SELECT * FROM Customer WHERE CustomerID = %s
@@ -240,7 +245,7 @@ def search_customer(conn):
 	cur.execute(sql_search_customer, (customerID,))
 	conn.commit()
 
-def enter_member(conn):
+def enter_member(conn): # Enters a new member
 	customerID = read_int("\nCustomer ID: ")
 	first_name = read_string("\nFirst Name: ")
 	last_name = read_string("\nLast Name: ")
@@ -266,7 +271,7 @@ def enter_member(conn):
 
 
 
-def update_member(conn):
+def update_member(conn): # Updates information on existing members
 	first_name = read_string("\nFirst Name: ")
 	last_name = read_string("\nLast Name: ")
 	email = read_string("\nEmail: ")
@@ -286,7 +291,7 @@ def update_member(conn):
 	cur.execute(sql_update_member, (first_name, last_name, email, phone_number, address, active_status, customerID))
 	conn.commit()
 
-def delete_member(conn):
+def delete_member(conn): # deletes a member
 	customerID = read_int("\nCustomer ID: ")
 
 	sql_delete_member = """
@@ -299,7 +304,7 @@ def delete_member(conn):
 	conn.commit()
 
 
-def search_member(conn):
+def search_member(conn): # Searches for a member based on ID
 	customerID = read_int("\nCustomer ID: ")
 
 	sql_search_member = """
@@ -318,7 +323,7 @@ def search_member(conn):
 
 
 
-def enter_staff(conn):
+def enter_staff(conn): # Enters a new staff member
 	first_name = read_string("\nWhat is the staff's first name? ")
 	last_name = read_string("\nWhat is the staff's last name? ")
 	age = read_int("\nHow old is the staff? ")
@@ -334,7 +339,7 @@ def enter_staff(conn):
 	conn.commit()
 
 
-def update_staff(conn):
+def update_staff(conn): # Updates staff data
 	first_name = read_string("\nWhat is the staff's first name? ")
 	last_name = read_string("\nWhat is the staff's last name? ")
 	age = read_int("\nHow old is the staff? ")
@@ -353,7 +358,7 @@ def update_staff(conn):
 	conn.commit()
 
 
-def delete_staff(conn):
+def delete_staff(conn): # Deletes a staff member
 	staffID = read_int("\n What is the staff's ID? ")
 
 	sql_delete_staff = """
@@ -365,7 +370,7 @@ def delete_staff(conn):
 	conn.commit()
 
 
-def search_staff(conn):
+def search_staff(conn): # searches staff based on ID
 	sql_search_staff = """
 		SELECT FirstName, LastName, Age, Address, Job, PhoneNumber, StaffID FROM Staff;
 	"""
