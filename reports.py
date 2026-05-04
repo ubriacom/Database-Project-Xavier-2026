@@ -32,7 +32,6 @@ def read_float(prompt):
 
 def reports(conn):
 	choice = -1
-	return_choice = -1
 	while choice < 1 or choice > 3:
 		choice = int(input("\nWhat reports are needed?\n" +
 						"1. Total sales by day, month, or year\n" +
@@ -49,7 +48,6 @@ def reports(conn):
 
 def reports_date_choice(conn):
 	choice = -1
-	return_choice = -1
 	while choice < 1 or choice > 3:
 		choice = int(input("\nDo you need the sales by day, month, or year?\n" +
 						   "1. Day\n" +
@@ -118,7 +116,6 @@ def reports_date_choice(conn):
 
 def stock_reporting(conn):
 	choice = -1
-	return_choice = -1
 	while choice < 1 or choice > 2:
 		choice = int(input("\nDo you want to check a product across one store or all stores?\n" +
 						   "1. One store\n" +
@@ -164,7 +161,6 @@ def stock_reporting(conn):
 		exit()
 
 def customer_purchase_amount(conn):
-	return_choice = -1
 	start_date = read_string("\nStart Date (YYYY-MM-DD): ")
 	end_date = read_string("\nEnd Date (YYYY-MM-DD): ")
 	customerID = read_int("Customer ID: ")
