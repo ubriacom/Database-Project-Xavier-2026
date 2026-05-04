@@ -3,7 +3,12 @@
 Enclosed in these files is the database that tracks the sales, stock, and members of the Muskie Co stores.
 
 To set up the script:
-Download the files from the zipped folder. Once you have done that go to lines 8 , 36, 37, and 38.
+Download the files from the zipped folder. First ensure that you have PyMySQL installed into your environment. If you do not you should be able to install it via the terminal with this command: 
+
+$ python3 -m pip install PyMySQL
+
+
+Once you have done that go to lines 8 , 36, 37, and 38.
 Replace the fields there with the name of your database, what your user is called in MySQL Workbench, your password, and the host address.
 
 If you filled out these criteria correctly upon running the program, you should see a screen like this:
