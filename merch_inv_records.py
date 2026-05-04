@@ -129,7 +129,7 @@ def search_product(conn):
 	cur.execute(sql_search_product, (product_id,))
 	conn.commit()
 
-	results = cur.fetchall()
+	results = cur.fetchall() #this chunch displays tables
 	for row in results:
 		print(row)
 
@@ -178,10 +178,10 @@ def search_discount(conn):
 		"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_search_discount, (discount_id,))
+	cur.execute(sql_search_discount, (discount_id))
 	conn.commit()
 
-	results = cur.fetchall()
+	results = cur.fetchall() 
 	for row in results:
 		print(row)
 
@@ -190,7 +190,7 @@ def manage_inv(conn):
 	while choice < 1 or choice > 3:
 		choice = int(input("\nWould you like to increase, remove, or search inventory?\n" +
 					"1. Increase\n" +
-					"2. Remove\n" +
+					"2. Update\n" +
 					"3. Search\n" + "\n"))
 		if choice == 1:
 			increase_inv(conn)
@@ -201,12 +201,39 @@ def manage_inv(conn):
 
 
 def increase_inv(conn):
-	pass
+	product_id = read_int("\nProduct ID")
+	increase_count = read_int("\nHow much would you like to add:") #determines how much to get added
+	sql_increase_inv = """
+        UPDATE Product SET Quantity = Quantity + (%s) WHERE ProductID = (%s); 
+		"""
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_increase_inv, (increase_count, product_id))
+	conn.commit()
 
 
-def remove_inv(conn):
-	pass
+def remove_inv(conn): #had to change it from a remove because of how we find out invetory in the database.
+	product_id = read_int("\nProduct ID")
+	remove_count = read_int("\nHow much would you like to remove:") #determines how much to get removed
+	sql_increase_inv = """
+        UPDATE Product SET Quantity = Quantity - (%s) WHERE ProductID = (%s); 
+		"""
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_increase_inv, (remove_count, product_id))
+	conn.commit()
 
 
 def search_inv(conn):
-	pass
+	product_id = read_int("\Product ID: ")
+	sql_search_discount = """
+        SELECT ProductID, Name, Quantity FROM Product WHERE ProductID = (%s);
+		"""
+	conn.begin()
+	cur = conn.cursor()
+	cur.execute(sql_search_discount, (product_id))
+	conn.commit()
+
+	results = cur.fetchall()
+	for row in results:
+		print(row)
