@@ -238,3 +238,4 @@ def search_inv(conn):
 	results = cur.fetchall()
 	for row in results:
 		print(row)
+#git moment
