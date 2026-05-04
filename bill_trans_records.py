@@ -24,6 +24,9 @@ def bill_trans_records(conn):
 
 def member_reward_notice(conn):
   pass
+
+
+
 def employee_reward_check(conn):
   pass
 

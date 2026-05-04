@@ -130,12 +130,12 @@ def record_new_store(conn):
     phone_number = read_string("Phone Number in (123)-456-7890 format: ")
 		
     sql_insert_store = """ 
-		INSERT INTO Store VALUES 
-		(%s, %s, %s);
+		INSERT INTO Store (ManagerID, Address, PhoneNumber) 
+		VALUES (%s, %s, %s);
 	"""
 	
     try:
-        conn.begin() # same as START TRANSACTION;
+        conn.begin()
         cur = conn.cursor()
 
         lines_affected = cur.execute(sql_insert_store, 
