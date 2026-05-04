@@ -78,7 +78,7 @@ def transaction_information(conn):
         conn.begin() 
         cur = conn.cursor(dictionary=True) # makes it nicer to read
   
-        cur.execute(sql_statement, (transaction_id))
+        cur.execute(sql_statement, (transaction_id,))
         results = cur.fetchall() # get our results
         print(f"Information for Transaction ID: {transaction_id}")
       
