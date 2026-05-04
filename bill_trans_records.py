@@ -73,15 +73,15 @@ def member_reward_notice(conn):
   # for this dataset, the earliest it will go is 2000, and the latest it will go is 2026
 	while transaction_year < 2000 or transaction_year > 2026:
 		transaction_year = read_int("Input Year (4 digits): ")
-	if transaction_year < 2000 or transaction_year > 2026:
-		print("Please input a valid year (years 2000-2026)")
+		if transaction_year < 2000 or transaction_year > 2026:
+			print("Please input a valid year (years 2000-2026)")
   
       
   # make sure it's a valid month
 	while transaction_month < 1 or transaction_month > 12:
 		transaction_month = read_int("Input Month (input number from 1-12: ")
-	if transaction_month < 1 or transaction_month > 12:
-		print("Please input a value between 1 and 12, according to the month.")
+		if transaction_month < 1 or transaction_month > 12:
+			print("Please input a value between 1 and 12, according to the month.")
       
   # do the same thing we did in Transaction Information, except we'll just grab
   # the total money spent :
@@ -101,7 +101,7 @@ def member_reward_notice(conn):
 	try:
 		# start our transaction
 		conn.begin() 
-		cur = conn.cursor(dictionary=True) # makes it nicer to read
+		cur = conn.cursor(pymysql.cursors.DictCursor) # makes it nicer to read
   	  
 		cur.execute(sql_statement, (transaction_year,transaction_month,customer_id))
   	  
@@ -118,9 +118,9 @@ def member_reward_notice(conn):
         
       # round and calculate rewards
 		total_spent = round(total_spent,2)
-		total_rewards = total_spent * 0.02 # 2% in rewards :D
-      
-		print(f"Total Customer Rewards for Customer Id {customer_id} on year {transaction_year} and month {transaction_month}: { total_rewards }")
+		total_rewards = round(total_spent * 0.02,2) # 2% in rewards :D
+
+		print(f"Total Customer Rewards for Customer Id {customer_id} on year {transaction_year} and month {transaction_month}: ${ total_rewards }")
       
 	except Exception as err:
 		print("Error: ", err)
@@ -132,7 +132,7 @@ def member_reward_notice(conn):
   
   
 # ----- CALCULATE AN EMPLOYEES REWARD -----
-# EXAMPLE: EmployeeId = 1, Year = 2018, Quarter = 3
+# EXAMPLE: EmployeeId = 1, Year = 2018, Quarter = 2
 # Should Return: 50 (2 sign ups -> 50 dollar bonus)
 def employee_reward_check(conn):
 	employee_id = -1 
@@ -191,7 +191,7 @@ def employee_reward_check(conn):
 	try:
   	  # start our transaction
 		conn.begin() 
-		cur = conn.cursor(dictionary=True) # makes it nicer to read
+		cur = conn.cursor(pymysql.cursors.DictCursor) # makes it nicer to read
   	  
 		cur.execute(sql_statement, (employee_id,transaction_year,qMonth1,qMonth2,qMonth3))
   	  
@@ -209,7 +209,7 @@ def employee_reward_check(conn):
 			total_signups += row["SignUps"] or 0
         
       # print the bonus!
-		print(f"Employee signed up {total_signups} in quarter {transaction_quarter}, {transaction_year} and earned ${total_bonus} !")
+		print(f"Employee {employee_id} signed up {total_signups} in quarter {transaction_quarter}, {transaction_year} and earned ${total_bonus} !")
       
 	except Exception as err:
 		print("Error: ", err)
@@ -251,7 +251,7 @@ def transaction_information(conn):
 	try:
 	# start our transaction
 		conn.begin() 
-		cur = conn.cursor(dictionary=True) # makes it nicer to read
+		cur = conn.cursor(pymysql.cursors.DictCursor) # makes it nicer to read
   	  
 		cur.execute(sql_statement, (transaction_id))
   	  
