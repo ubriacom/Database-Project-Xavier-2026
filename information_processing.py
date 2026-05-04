@@ -139,7 +139,7 @@ def record_new_store(conn): # adds a new store
 		VALUES (%s, %s, %s);
 	"""
 	
-    try:
+    try: # try excepts to ensure only correct queries make it through.
         conn.begin()
         cur = conn.cursor()
 
@@ -198,7 +198,7 @@ def search_store(conn): # Searches existing stores.
         print(row)
 
 
-def enter_customer(conn):
+def enter_customer(conn): # Enters a new customer
     sql_enter_customer = """
     INSERT INTO Customer () VALUES (); 
     """
@@ -210,7 +210,7 @@ def enter_customer(conn):
     print("Customer successfully added.")
 
 
-def update_customer(conn):
+def update_customer(conn): # Updates a customer's ID
     old_customerID = read_int("\nWhat is the current customer ID: ")
     new_customerID = read_int("\nWhat is the new customer ID: ")
 
@@ -224,7 +224,7 @@ def update_customer(conn):
     conn.commit()
     print("Customer successfully updated.")
 
-def delete_customer(conn):
+def delete_customer(conn): # Deletes a customer based on their ID
     customerID = read_int("\nWhat is the customer ID you want to delete: ")
 
     sql_delete_customer = """
@@ -237,7 +237,7 @@ def delete_customer(conn):
     conn.commit()
     print("Customer successfully deleted.")
 
-def search_customer(conn):
+def search_customer(conn): # Searches for a customer
     customerID = read_int("\nWhat is the customer ID to search for: ")
     sql_search_customer = """
     SELECT * FROM Customer WHERE CustomerID = %s
