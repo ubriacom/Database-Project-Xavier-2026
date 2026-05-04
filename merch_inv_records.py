@@ -96,11 +96,13 @@ def enter_product(conn):
 	cur.execute(sql_enter_product, (store_id, name, buy_price, sell_price))
 	conn.commit()
 #simmilar concept to the previous function for all the other functions
+
+
 def update_product(conn):
 	name = read_string("\nEnter the name of the product you want to update: ") #specify just so the user does not think they are updating an ID
 	sell_price = read_float("\nSell Price: ")
 	sql_update_product = """
-        UPDATE Product SET Price = (%s) WHERE Name = (%s);
+        UPDATE Product SET SellPrice = (%s) WHERE Name = (%s);
 		"""
 	conn.begin()
 	cur = conn.cursor()
@@ -114,7 +116,7 @@ def delete_product(conn):
 		"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_delete_product, (product_id))
+	cur.execute(sql_delete_product, (product_id,))
 	conn.commit()
 
 def search_product(conn):
@@ -124,9 +126,12 @@ def search_product(conn):
 		"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_search_product, (product_id))
+	cur.execute(sql_search_product, (product_id,))
 	conn.commit()
 
+	results = cur.fetchall()
+	for row in results:
+		print(row)
 
 
 def enter_discount(conn):
@@ -135,7 +140,7 @@ def enter_discount(conn):
 	end_date = read_string("\nEnd Date: ")
 
 	sql_enter_discount = """
-        INSERT INTO Discount (Amount, StartDate, EndDate) VALUES ((%s), '2026-8-31', '2026-10-15');
+        INSERT INTO Discount (Amount, StartDate, EndDate) VALUES (%s, %s, %s);
 		"""
 	conn.begin()
 	cur = conn.cursor()
@@ -163,19 +168,22 @@ def delete_discount(conn):
 		"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_delete_discount, (discount_id))
+	cur.execute(sql_delete_discount, (discount_id,))
 	conn.commit()
 
 def search_discount(conn):
 	discount_id = read_int("\nDiscount ID: ")
 	sql_search_discount = """
-        SELECT * FROM Discount WHERE DiscountID = (%s);;
+        SELECT * FROM Discount WHERE DiscountID = (%s);
 		"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_search_discount, (discount_id))
+	cur.execute(sql_search_discount, (discount_id,))
 	conn.commit()
 
+	results = cur.fetchall()
+	for row in results:
+		print(row)
 
 def manage_inv(conn):
 	choice = -1

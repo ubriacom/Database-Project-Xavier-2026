@@ -163,7 +163,7 @@ def update_store(conn):
     """
     conn.begin()
     cur = conn.cursor()
-    cur.execute(sql_update_store(managerID, address, phone_number, storeID))
+    cur.execute(sql_update_store, (managerID, address, phone_number, storeID))
     conn.commit()
 
 def delete_store(conn):
@@ -185,8 +185,12 @@ def search_store(conn):
     """
     conn.begin()
     cur = conn.cursor()
-    cur.execute(sql_search_store, (storeID))
+    cur.execute(sql_search_store, (storeID,))
     conn.commit()
+
+    results = cur.fetchall()
+    for row in results:
+        print(row)
 
 
 def enter_customer(conn):
@@ -260,7 +264,7 @@ def delete_member(conn):
 
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_delete_member, (customerID))
+	cur.execute(sql_delete_member, (customerID,))
 	conn.commit()
 
 
@@ -273,8 +277,12 @@ def search_member(conn):
 
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_search_member, (customerID))
+	cur.execute(sql_search_member, (customerID,))
 	conn.commit()
+	
+	results = cur.fetchall()
+	for row in results:
+		print(row)
 
 
 
@@ -291,7 +299,7 @@ def enter_staff(conn):
 """
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_enter_staff (first_name, last_name, age, address, job, phone_number))
+	cur.execute(sql_enter_staff, (first_name, last_name, age, address, job, phone_number))
 	conn.commit()
 
 
@@ -310,7 +318,7 @@ def update_staff(conn):
 
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_enter_staff (first_name, last_name, age, address, job, phone_number, staff_ID))
+	cur.execute(sql_enter_staff, (first_name, last_name, age, address, job, phone_number, staff_ID))
 	conn.commit()
 
 
@@ -322,7 +330,7 @@ def delete_staff(conn):
 	"""
 	conn.begin()
 	cur = conn.cursor()
-	cur.execute(sql_delete_staff(staffID))
+	cur.execute(sql_delete_staff, (staffID,))
 	conn.commit()
 
 
@@ -334,3 +342,6 @@ def search_staff(conn):
 	cur = conn.cursor()
 	cur.execute(sql_search_staff)
 	conn.commit()
+	results = cur.fetchall()
+	for row in results:
+		print(row)
