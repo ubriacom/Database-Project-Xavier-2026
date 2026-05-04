@@ -1,6 +1,7 @@
 import pymysql.cursors
 
 # UTILITY FUNCTIONS
+
 def read_string(prompt):
 	""" 
 	Reads a string from the user 
@@ -49,8 +50,8 @@ def bill_trans_records(conn):
 		elif choice == 3:
 			transaction_information(conn)
 		else:
-		  print(f"{choice} is not a valid value, please input '1', '2', or '3' (without quotes)")
-		  print("'4' to close")
+			print(f"{choice} is not a valid value, please input '1', '2', or '3' (without quotes)")
+			print("'4' to close")
 
 
 # ----- CALCULATE A MEMBERS REWARD -----
@@ -231,48 +232,48 @@ def transaction_information(conn):
   	  transaction_id = read_int("Transaction ID: ")
   	  if transaction_id < 0:
   	    print("Transaction ID must be positive!")
+ 	
+	# create our large SQL statement (boo! im a big block of code!)
+	sql_statement = f"""
+	SELECT DISTINCT p.Name, MAX(p.SellPrice) AS Individual_Price, MAX(pp.Quantity) AS Total_Quantity, MAX(p.SellPrice * pp.Quantity) AS Raw_Amount_Spent,
+	SUM(d.Amount) AS Discount, MAX(p.SellPrice * pp.Quantity) * (100-SUM(d.Amount))/100 AS Amount_Spent
+	FROM Transaction t -- Using joins to chain transaction purchased prodcuct and product together.
+	INNER JOIN PurchasedProduct pp ON t.TransactionID = pp.TransactionID
+	INNER JOIN Product p ON pp.ProductID = p.ProductID -- the chain is over :D 
+	INNER JOIN DiscountAppliesToProduct DAP ON DAP.ProductID = p.ProductID
+	INNER JOIN Discount d ON DAP.DiscountID = d.DiscountID
+	WHERE t.TransactionID = %s AND d.DiscountID IN (
+	SELECT DiscountID FROM Discount
+	WHERE Discount.StartDate < CURDATE() AND CURDATE() < Discount.EndDate ) 
+	GROUP BY p.ProductID;
+	"""
   	
-  	# create our large SQL statement (boo! im a big block of code!)
-  	sql_statement = f"""
-  	SELECT DISTINCT p.Name, MAX(p.SellPrice) AS Individual_Price, MAX(pp.Quantity) AS Total_Quantity, MAX(p.SellPrice * pp.Quantity) AS Raw_Amount_Spent,
-  	SUM(d.Amount) AS Discount, MAX(p.SellPrice * pp.Quantity) * (100-SUM(d.Amount))/100 AS Amount_Spent
-  	FROM Transaction t -- Using joins to chain transaction purchased prodcuct and product together.
-  	INNER JOIN PurchasedProduct pp ON t.TransactionID = pp.TransactionID
-  	INNER JOIN Product p ON pp.ProductID = p.ProductID -- the chain is over :D 
-  	INNER JOIN DiscountAppliesToProduct DAP ON DAP.ProductID = p.ProductID
-  	INNER JOIN Discount d ON DAP.DiscountID = d.DiscountID
-  	WHERE t.TransactionID = %s AND d.DiscountID IN (
-  	SELECT DiscountID FROM Discount
-  	WHERE Discount.StartDate < CURDATE() AND CURDATE() < Discount.EndDate ) 
-  	GROUP BY p.ProductID;
-  	"""
-  	
-  	try:
-  	  # start our transaction
-  	  conn.begin() 
-  	  cur = conn.cursor(dictionary=True) # makes it nicer to read
+	try:
+	# start our transaction
+		conn.begin() 
+		cur = conn.cursor(dictionary=True) # makes it nicer to read
   	  
-  	  cur.execute(sql_statement, (transaction_id))
+		cur.execute(sql_statement, (transaction_id))
   	  
-  	  results = cur.fetchall() # get our results
-  	  print(f"Information for Transaction ID: {transaction_id}")
+		results = cur.fetchall() # get our results
+		print(f"Information for Transaction ID: {transaction_id}")
       
-      if (len(results) == 0):
+		if (len(results) == 0):
         # no data! let the user known
-        raise Exception(f"No data found for Transaction ID: {transaction_id}")
+			raise Exception(f"No data found for Transaction ID: {transaction_id}")
       
       # display results and calculate total manually
-      total_spent = 0
-      for row in results:
-        print(row)
-        total_spent += row["Amount_Spent"] or row["Raw_Amount_Spent"] or 0
+		total_spent = 0
+		for row in results:
+			print(row)
+			total_spent += row["Amount_Spent"] or row["Raw_Amount_Spent"] or 0
         
-      print(f"Total money spent in transaction: { round(total_spent,2) }")
-      
-    except Exception as err:
-      print("Error: ", err)
-      conn.rollback() # same as ROLLBACK in SQL
+    print(f"Total money spent in transaction: { round(total_spent,2) }")
+
+	except Exception as err:
+		print("Error: ", err)
+		conn.rollback() # same as ROLLBACK in SQL
   
-  	else: # this only triggers if the entire try block was successful
+	else: # this only triggers if the entire try block was successful
   		conn.commit() # same as COMMIT in SQL
   

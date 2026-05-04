@@ -29,10 +29,9 @@ def read_float(prompt):
 	return float(input(prompt))
 
 
-
+# Asks the user which operation they would like to do.
 def reports(conn):
 	choice = -1
-	return_choice = -1
 	while choice < 1 or choice > 3:
 		choice = int(input("\nWhat reports are needed?\n" +
 						"1. Total sales by day, month, or year\n" +
@@ -46,16 +45,16 @@ def reports(conn):
 			customer_purchase_amount(conn)
 
 
-
+# Called by reports, Asks the user whether they want sales data by day, month, or year
 def reports_date_choice(conn):
 	choice = -1
-	return_choice = -1
 	while choice < 1 or choice > 3:
 		choice = int(input("\nDo you need the sales by day, month, or year?\n" +
 						   "1. Day\n" +
 						   "2. Month\n" +
 						   "3. Year\n\n"))
 
+		# Runs SQL command to find sales by day
 		if choice == 1:
 			storeID = read_int("Store ID: ")
 			date = read_string("Day (YYYY-MM-DD): ")
@@ -68,10 +67,11 @@ def reports_date_choice(conn):
 			
 			cur = conn.cursor()
 			cur.execute(sql, (storeID, date))
-			result = cur.fetchone()
+			result = cur.fetchall()
 			cur.close()
 			print(f"\nSales for Store {storeID} on {date}: {result[0]}")
 
+		# Runs SQL command to find sales by Month
 		elif choice == 2:
 			storeID = read_int("Store ID: ")
 			month = read_int("Month (1-12): ")
@@ -89,6 +89,7 @@ def reports_date_choice(conn):
 			cur.close()
 			print(f"\nSales for Store {storeID} in {month}/{year}: {result[0]}")
 
+		# Runs SQL command to find sales by year
 		elif choice == 3:
 			storeID = read_int("Store ID: ")
 			year = read_int("Year (YYYY): ")
@@ -104,9 +105,11 @@ def reports_date_choice(conn):
 			cur.close()
 			print(f"\nSales for Store {storeID} in {year}: {result[0]}")
 		
+		# Runs when number other than 1, 2, or 3 is submitted, while loop runs again reasking original question.
 		else:
 			print("Invalid choice, please enter 1, 2, or 3.")
-		
+	
+	# Restarts question tree in order to do another operation
 	return_choice = int(input("\nWould you like to do another operation?\n" +
 					"1. Yes\n" +
 					"2. No\n" + "\n"))
@@ -116,14 +119,15 @@ def reports_date_choice(conn):
 		exit()
 
 
+# Called by reports, Asks the user whether they want stock data from one store or from all stores
 def stock_reporting(conn):
 	choice = -1
-	return_choice = -1
 	while choice < 1 or choice > 2:
 		choice = int(input("\nDo you want to check a product across one store or all stores?\n" +
 						   "1. One store\n" +
 						   "2. All stores\n\n"))
 
+		# Asks for Store Id and Product name to run SQL query to find stock at specific store
 		if choice == 1:
 			storeID = read_int("Store ID: ")
 			product_name = read_string("Product Name: ")
@@ -139,6 +143,7 @@ def stock_reporting(conn):
 			cur.close()
 			print(f"\nStock of '{product_name}' at Store {storeID}: {result[0]}")
 
+		# Asks for Product name to run SQL query to find stock at all stores
 		elif choice == 2:
 			product_name = read_string("Product Name: ")
 			sql = """
@@ -152,9 +157,11 @@ def stock_reporting(conn):
 			cur.close()
 			print(f"\nTotal stock of '{product_name}' across all stores: {result[0]}")
 
+		# Runs when number other than 1 or is submitted, while loop runs again reasking original question.
 		else:
 			print("Invalid choice, please enter 1 or 2.")
 
+	# Restarts question tree in order to do another operation
 	return_choice = int(input("\nWould you like to do another operation?\n" +
 				"1. Yes\n" +
 				"2. No\n" + "\n"))
@@ -163,12 +170,14 @@ def stock_reporting(conn):
 	else:
 		exit()
 
+
+# Called by reports, Asks the user start date, end date, and customer id to find purchase amount over time period.
 def customer_purchase_amount(conn):
-	return_choice = -1
 	start_date = read_string("\nStart Date (YYYY-MM-DD): ")
 	end_date = read_string("\nEnd Date (YYYY-MM-DD): ")
 	customerID = read_int("Customer ID: ")
 
+	# Runs SQL query to find purchase amount for customer.
 	sql_customer_purchase_records = """
 		SELECT SUM(P.SellPrice) AS Amount_Spent, t.CustomerID
 		FROM Transaction t
@@ -183,6 +192,7 @@ def customer_purchase_amount(conn):
 	cur.close()
 	print(f"\nPurchase amount for Customer {customerID} between {start_date} and {end_date}: {result[0]}")
 
+	# Restarts question tree in order to do another operation
 	return_choice = int(input("\nWould you like to do another operation?\n" +
 				"1. Yes\n" +
 				"2. No\n" + "\n"))
